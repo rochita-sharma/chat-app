@@ -19,12 +19,8 @@ public class ChatClient {
             BufferedReader serverIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter serverOut = new PrintWriter(socket.getOutputStream(), true);
 
-//        BufferedReader userIn = new BufferedReader(new InputStreamReader(System.in));
-
             new Thread(new ClientListener(serverIn)).start();
 
-//        System.out.println("Enter username: ");
-//        serverOut.println(userIn.readLine());
             Scanner scanner = new Scanner(System.in);
             String msg;
             while(true) {

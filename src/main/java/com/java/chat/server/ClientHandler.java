@@ -1,5 +1,6 @@
 package com.java.chat.server;
 
+import com.java.chat.models.Message;
 import com.java.chat.models.User;
 
 import java.io.BufferedReader;
@@ -28,18 +29,24 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
+        out.println("Enter username: ");
+        String username = null;
         try {
-            String username = in.readLine();
+            username = in.readLine();
             this.user  =  new User(clientSocket, username);
-            ClientManager.addClient(username, out);
+            ClientManager.addUser(username, out);
 
             String input;
             while ((input = in.readLine()) != null) {
+                Message msg = ChatProtocol.parse(input, username);
+                if(msg != null) {
+                    MessageRouter.route(msg);
+                }
 //                MessageRouter.route(input, username);
-                ClientManager.broadcast(input);
+//                ClientManager.broadcast(input);
             }
         } catch (Exception e) {
-//            ClientManager.removeClient(username);
+            ClientManager.removeUser(username);
         }
     }
     private void closeConnection() {

@@ -1,13 +1,18 @@
 package com.java.chat.server;
 
-public class ChatProtocol {
-    public static final String LOGIN = "LOGIN";
-    public static final String MESSAGE = "MESSAGE";
-    public static final String LOGOUT = "LOGOUT";
 
-    // Format: TYPE|sender|receiver|content
-    public static String build(String type, String sender,
-                               String receiver, String content) {
-        return type + "|" + sender + "|" + receiver + "|" + content;
+import com.java.chat.models.Message;
+
+public class ChatProtocol {
+    public static Message parse(String raw, String sender){
+        if(!raw.startsWith("@")) return null;
+
+        int idx = raw.indexOf(":");
+        if(idx == -1) return null;
+
+        String receiver = raw.substring(1,idx).trim();
+        String content = raw.substring(idx+1).trim();
+
+        return new Message(sender, receiver, content);
     }
 }
