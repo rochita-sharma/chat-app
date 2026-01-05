@@ -39,18 +39,20 @@ To send a message, the client types:
 ---
 
 ## Message Flow
-Client
-|
-| message (@user: text)
-v
-ClientHandler
-|
-|-- ChatProtocol → parses message
-|-- MessageDAO → saves message to DB
-|-- MessageRouter
-|
-|-- if receiver ONLINE → send via socket
-|-- if receiver OFFLINE → keep in DB
+
+```mermaid
+sequenceDiagram
+    Client->>ClientHandler: @user: message
+    ClientHandler->>ChatProtocol: parse()
+    ClientHandler->>MessageDAO: save()
+    ClientHandler->>MessageRouter: route()
+    alt Receiver ONLINE
+        MessageRouter->>Client: send via socket
+    else Receiver OFFLINE
+        MessageRouter->>Database: store message
+    end
+```
+
 
 
 ---
