@@ -1,5 +1,8 @@
 package com.java.chat.server;
 
+import com.java.chat.dao.MessageDAO;
+import com.java.chat.dao.UserDAO;
+import com.java.chat.enums.Status;
 import com.java.chat.models.Message;
 import com.java.chat.models.User;
 
@@ -15,6 +18,8 @@ public class ClientHandler implements Runnable {
     private BufferedReader in;
     private PrintWriter out;
     private User user;
+    private UserDAO userDAO = new UserDAO();
+    private MessageDAO messageDAO = new MessageDAO();
 
     public ClientHandler(Socket socket) {
         this.clientSocket = socket;
@@ -33,20 +38,22 @@ public class ClientHandler implements Runnable {
         String username = null;
         try {
             username = in.readLine();
-            this.user  =  new User(clientSocket, username);
+            user  =  new User(clientSocket, username, Status.ONLINE);
             ClientManager.addUser(username, out);
+            userDAO.saveUser(user);
 
             String input;
             while ((input = in.readLine()) != null) {
                 Message msg = ChatProtocol.parse(input, username);
                 if(msg != null) {
-                    MessageRouter.route(msg);
+                    MessageRouter.route(msg, user);
                 }
-//                MessageRouter.route(input, username);
-//                ClientManager.broadcast(input);
             }
         } catch (Exception e) {
+            user.setStatus(Status.OFFLINE);
+            userDAO.updateStatus(user);
             ClientManager.removeUser(username);
+            closeConnection();
         }
     }
     private void closeConnection() {

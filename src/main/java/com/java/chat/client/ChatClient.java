@@ -1,7 +1,5 @@
 package com.java.chat.client;
 
-import com.java.chat.server.ChatProtocol;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

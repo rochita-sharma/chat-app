@@ -9,8 +9,7 @@ public class Message {
     String sender;
     String receiver;
     String content;
-//    MessageType type;
-//    long timestamp;
+    long timestamp;
 
     public Message(String sender, String receiver, String content) {
         this.sender = sender;
