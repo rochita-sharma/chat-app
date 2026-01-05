@@ -1,10 +1,5 @@
 # Java Socket Chat Application
 
-A simple real-time chat application built using Java socket programming and PostgreSQL.
-It supports multiple users, online/offline status, and offline message delivery.
-
-# Java Socket Chat Application
-
 A simple real-time chat application built using **Java sockets** and **PostgreSQL**.
 Supports multiple users, user status tracking, and offline message delivery.
 
