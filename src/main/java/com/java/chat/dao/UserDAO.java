@@ -10,10 +10,9 @@ public class UserDAO {
 
     public void saveUser(User user) {
         String sql = "INSERT INTO users ( username, status ) VALUES ( ?, ? ) " +
-                "ON CONFLICT (username) DO UPDATE SET status=EXCLUDED.status, last_seen = now() ";
+                "ON CONFLICT (username) DO UPDATE SET status=EXCLUDED.status, last_seen = now()";
         try(Connection conn = DatabaseConfig.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
-
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getStatus().toString());
             int rows = ps.executeUpdate();

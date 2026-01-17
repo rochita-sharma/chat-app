@@ -9,12 +9,11 @@ public class MessageRouter {
     private static final MessageDAO messageDAO = new MessageDAO();
 
     public static void route(Message msg, User user) {
-        if(user.getStatus() == Status.ONLINE && msg.getReceiver().startsWith("all")){
-            messageDAO.save(msg);
-            ClientManager.broadcast(msg);
-        } else{
-            messageDAO.save(msg);
+        if(user.getStatus() == Status.ONLINE) {
+            messageDAO.save(msg, true);
             ClientManager.sendToUser(msg);
+        } else {
+            messageDAO.save(msg, false);
         }
     }
 }

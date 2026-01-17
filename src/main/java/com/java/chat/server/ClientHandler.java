@@ -50,9 +50,13 @@ public class ClientHandler implements Runnable {
                 }
             }
         } catch (Exception e) {
-            user.setStatus(Status.OFFLINE);
-            userDAO.updateStatus(user);
-            ClientManager.removeUser(username);
+            System.out.println(e.getMessage());
+        } finally {
+            if(user!=null) {
+                user.setStatus(Status.OFFLINE);
+                userDAO.updateStatus(user);
+                ClientManager.removeUser(username);
+            }
             closeConnection();
         }
     }
