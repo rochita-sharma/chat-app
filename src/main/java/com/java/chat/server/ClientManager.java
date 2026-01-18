@@ -28,4 +28,7 @@ public class ClientManager {
             }
         }
     }
+    public static PrintWriter getClient(String receiver){
+        return users.get(receiver);
+    }
 }

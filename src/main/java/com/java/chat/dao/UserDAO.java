@@ -5,6 +5,7 @@ import com.java.chat.models.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class UserDAO {
 
@@ -33,5 +34,20 @@ public class UserDAO {
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String fetchUserStatus(String receiver){
+        String sql = "SELECT status FROM users WHERE username=?";
+        String status = null;
+        try(Connection conn = DatabaseConfig.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, receiver);
+            ResultSet rs = ps.executeQuery();
+            status = rs.getString("status");
+            System.out.println("User Status fetched "+ status);
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        return status;
     }
 }

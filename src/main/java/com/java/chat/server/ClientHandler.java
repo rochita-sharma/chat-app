@@ -46,7 +46,6 @@ public class ClientHandler implements Runnable {
             List<Message> pending = messageDAO.getUndeliveredMessages(user.getUsername());
             for(Message msg: pending){
                 MessageRouter.route(msg, user);
-                messageDAO.markDelivered(msg.getMessageId());
             }
 
             String input;

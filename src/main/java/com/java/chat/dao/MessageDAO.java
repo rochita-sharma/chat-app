@@ -2,7 +2,6 @@ package com.java.chat.dao;
 
 import com.java.chat.config.DatabaseConfig;
 import com.java.chat.models.Message;
-import com.java.chat.models.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +21,9 @@ public class MessageDAO {
             ps.setString(2, message.getReceiver());
             ps.setString(3, message.getContent());
             ps.setBoolean(4, delivered);
+
+            int rows = ps.executeUpdate();
+            System.out.println("Message saved/updated, rows=" + rows);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -57,7 +59,8 @@ public class MessageDAO {
         try(Connection conn = DatabaseConfig.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setInt(1, messageId);
-            ps.executeUpdate();
+            int rows = ps.executeUpdate();
+            System.out.println("Marked as delivered, rows=" + rows);
         } catch(Exception e){
             e.printStackTrace();
         }
