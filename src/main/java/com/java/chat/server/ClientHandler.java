@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 
 public class ClientHandler implements Runnable {
 
@@ -41,6 +42,12 @@ public class ClientHandler implements Runnable {
             user  =  new User(clientSocket, username, Status.ONLINE);
             ClientManager.addUser(username, out);
             userDAO.saveUser(user);
+
+            List<Message> pending = messageDAO.getUndeliveredMessages(user.getUsername());
+            for(Message msg: pending){
+                MessageRouter.route(msg, user);
+                messageDAO.markDelivered(msg.getMessageId());
+            }
 
             String input;
             while ((input = in.readLine()) != null) {
